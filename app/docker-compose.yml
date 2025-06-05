@@ -1,0 +1,27 @@
+
+
+services:
+  app:
+    build: ./app
+    container_name: devops_app
+    restart: always
+    expose:
+      - "3000"
+    networks:
+      - devops_net
+
+  nginx:
+    image: nginx:alpine
+    container_name: devops_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - devops_net
+
+networks:
+  devops_net:
+    driver: bridge
